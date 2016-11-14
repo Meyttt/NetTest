@@ -18,10 +18,14 @@ public class MyServlet extends HttpServlet {
          * network=>all=>F5=>headers
          */
         resp.setCharacterEncoding("UTF-8");
-        System.out.println(req.getContextPath());
-        System.out.println(req.getServletPath());
-        System.out.println(req.getPathInfo());
-        InputStream inputStream=getClass().getResourceAsStream("/test.html");
+        String servletPath=req.getServletPath();
+        String resourceName;
+        if("/".equals(servletPath)){
+            resourceName= "/index.html";
+        }else{
+            resourceName=servletPath;
+        }
+        InputStream inputStream=getClass().getResourceAsStream(resourceName);
         IO.copy(inputStream,resp.getOutputStream());
     }
 
@@ -33,4 +37,7 @@ public class MyServlet extends HttpServlet {
         System.out.println(password);
         resp.getWriter().write("Hello, "+login+"!");
     }
+    //https://github.com/bitwiseshiftleft/sjcl
+    //srp.stanford.edu/demo
+    //github.com/osobolev/WebCrypto
 }
